@@ -38,10 +38,14 @@ http://localhost:8080
 Principales herramientas y tecnologías utilizadas:
 
 * **Java:** 17
-* **Spring Boot:** 3.x
+* **Spring Boot:** 4.x
 * **Maven:** 3.8+
 * **Spring Web:** para la creación de la API REST
 * **Spring Validation:** validación de datos de entrada
+* **Flyway:** migraciones de base de datos
+* **Lombok:** anotaciones para optimizacion de codigo
+* **Spring Devtools:** herramientas de desarrollo
+* **PostgreSQL: para almacenamiento de predicciones**
 * **JUnit 5 / Mockito:** pruebas unitarias
 
 *(Las versiones exactas pueden consultarse en el archivo `pom.xml`)*
