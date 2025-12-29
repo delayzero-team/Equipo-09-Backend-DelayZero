@@ -1,4 +1,4 @@
-package com.alura.forohub.infra.exception;
+package com.aluraone.delayzero.infra.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
