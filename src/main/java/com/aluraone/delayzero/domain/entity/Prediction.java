@@ -1,4 +1,4 @@
 package com.aluraone.delayzero.domain.entity;
 
-public class Prediccion {
+public class Prediction {
 }

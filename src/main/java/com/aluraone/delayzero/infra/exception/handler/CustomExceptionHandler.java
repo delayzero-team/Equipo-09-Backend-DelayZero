@@ -1,4 +1,4 @@
-package com.alura.forohub.infra.exception.handler;
+package com.aluraone.delayzero.infra.exception.handler;
 
 import com.alura.forohub.infra.exception.CustomApiException;
 import com.alura.forohub.infra.response.ResponseHandler;
