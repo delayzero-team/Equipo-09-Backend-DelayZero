@@ -8,7 +8,8 @@ public record PredictionRequest(
         @NotBlank String nombreAerolinea,
         @NotBlank String origenVuelo,
         @NotBlank String destinoVuelo,
-        @NotNull LocalDateTime fechaPartidaVuelo,
+        /* Buscar como formatear LocalDateTime en el json de entrada */
+        //@NotNull LocalDateTime fechaPartidaVuelo,
         int distanciaKilometros
 ) {
 }

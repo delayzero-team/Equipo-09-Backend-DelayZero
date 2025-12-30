@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class FlightPredictController {
 
     @PostMapping
-    public ResponseEntity<PredictionData> realizarPrediccion(@RequestBody @Valid PredictionRequest predictionRequest) {
+    public ResponseEntity<PredictionData> makePrediction(@RequestBody @Valid PredictionRequest predictionRequest) {
         /*
         DATOS PARA PROBAR EL CONTROLLER, LA ENTRADA DEL JSON ESPERADO PARA REALIZAR LA PREDICCIÓN
         Y LA RESPUESTA EN JSON PARA EL FRONTEND (RESPUESTA DE LA PREDICCIÓN):

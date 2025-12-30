@@ -1,7 +1,7 @@
 package com.aluraone.delayzero.infra.exception.handler;
 
-import com.alura.forohub.infra.exception.CustomApiException;
-import com.alura.forohub.infra.response.ResponseHandler;
+import com.aluraone.delayzero.infra.exception.CustomApiException;
+import com.aluraone.delayzero.infra.response.ResponseHandler;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
