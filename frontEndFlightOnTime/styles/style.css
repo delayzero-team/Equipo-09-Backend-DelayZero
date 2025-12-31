@@ -1,0 +1,201 @@
+/*SE IMPORTA EL ESTILO DE FUENTE*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/*VARIABLES CSS*/
+:root {
+    --primary-color: #16417E;
+    --secondary-color: #FFFFFF;
+    --tertiary-color: #6EA0CE;
+    --quartertiary-color: #FBFBFB;
+
+    --font-inter: "Inter";
+}
+
+/*ESTILOS GLOBALES*/
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: var(--primary-color);
+}
+
+/*PRINCIPAL*/
+
+.principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 32px 0 70px 0;
+
+    background-repeat: no-repeat;
+
+    background-image: url("/assets/imagenBase.png");
+    background-position: center;
+    background-size: cover;
+}
+
+.principal__image {
+    margin: 0 0 98px 0;
+    width: 401px;
+
+    border-radius: 20px;
+}
+
+h1 {
+    margin: 0 0 141px 0;
+
+    font-size: 3.45rem;
+    font-family: var(--font-inter);
+    font-weight: 300;
+    color: var(--secondary-color);
+}
+
+.principal__text {
+    margin: 0 0 75px 0;
+    width: 530px;
+
+    font-size: 1.75rem; 
+    font-weight: 300;
+    font-family: var(--font-inter);
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+.bold__text {
+    font-weight: bold;
+}
+
+.principal__consult {
+    font-size: 28px;
+    font-family: var(--font-inter);
+    font-weight: bold;
+    color: black;
+    text-decoration: none;
+
+    padding: 28px 80px;
+
+
+    border: 1.5px solid var(--quartertiary-color);
+    border-radius: 20px;
+
+    background-color: var(--tertiary-color);
+
+    transition: 0.3s;
+}
+
+.principal__consult:hover {
+    background-color: var(--quartertiary-color);
+    box-shadow: 0 0px 8px 1px var(--tertiary-color);
+}
+
+/*INFORMATION ABOUT APP*/
+
+h2 {
+    font-size: 2.2rem;
+    font-family: var(--font-inter);
+    font-weight: 300;
+    text-align: center;
+    color: var(--secondary-color);
+
+    margin: 74px  0 85px 0;
+}
+
+.aboutApp__div {
+    display: flex;
+    justify-content: center;
+    gap: 90px;
+}
+
+.aboutApp__div__title {
+    font-size:1.75rem;
+    font-family: var(--font-inter);
+    font-weight: 300;
+    color: var(--secondary-color);
+
+    margin: 3.3rem 0 0 0;
+}
+
+.aboutApp__div__information {
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+    gap: 15px;
+}
+
+.aboutApp__div__information__text{
+    width: 651px;
+    padding: 33px 36px;
+
+    font-size: 1.75rem;
+    font-family: var(--font-inter);
+    font-weight: 300;
+    color: var(--secondary-color);
+    text-align: left;
+
+    border: 0.3px solid var(--tertiary-color);
+    border-radius: 20px;
+}
+
+.aboutApp__div__information__git {
+    font-size: 1.13rem;
+    font-family: var(--font-inter);
+    color: var(--secondary-color);
+    font-weight: 300;
+    text-decoration: none;
+}
+
+.aboutApp__div__information__git:hover {
+    text-decoration: underline
+}
+
+.aboutApp__div__information__arrow {
+    font-size: 1.5rem;
+}
+
+/*FOOTER*/
+
+.footerPag {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+    padding: 40px 0;
+    margin: 108px 0 0 0;
+    border-top: 0.1px solid var(--tertiary-color);
+}
+
+.footerPag__text {
+    font-size: 16px;
+    font-family: var(--font-inter);
+    font-weight: 300;
+    color: var(--secondary-color);
+}
+
+/* --------------- // ----------------*/
+
+@media (min-width: 1700px) {
+
+    .principal__image {
+        margin: 0 0 250px 0;
+    }
+
+    h1 {
+        margin: 0 0 250px 0;
+
+        font-size: 3.75rem;
+    }
+
+    .principal__text {
+        margin: 0 0 130px 0;
+    }
+
+    .principal__consult {
+        margin: 0 0 70px 0;
+    }
+    
+}
+
