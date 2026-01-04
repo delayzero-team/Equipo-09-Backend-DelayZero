@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
+
 @RestController
 @RequestMapping("/prediction")
 public class FlightPredictController {
@@ -19,7 +21,7 @@ public class FlightPredictController {
         Y LA RESPUESTA EN JSON PARA EL FRONTEND (RESPUESTA DE LA PREDICCIÓN):
         */
         System.out.println(predictionRequest);
-        PredictionData predData = new PredictionData("Puntual", 0.80);
+        PredictionData predData = new PredictionData("Puntual", 0.82);
         return ResponseHandler.buildResponse("Prediccion obtenida con exito", HttpStatus.OK,
                 predData);
     }

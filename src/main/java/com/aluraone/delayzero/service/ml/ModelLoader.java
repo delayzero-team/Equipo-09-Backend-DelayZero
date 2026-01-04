@@ -25,5 +25,4 @@ public class ModelLoader {
         } catch(IOException | OrtException ignored){ return null; }
         return null;
     }
-
 }
