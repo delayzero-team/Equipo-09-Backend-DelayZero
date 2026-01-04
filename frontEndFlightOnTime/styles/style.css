@@ -32,7 +32,7 @@ body {
 
     background-repeat: no-repeat;
 
-    background-image: url("/assets/imagenBase.png");
+    background-image: url("../assets/imagenBase.png");
     background-position: center;
     background-size: cover;
 }
