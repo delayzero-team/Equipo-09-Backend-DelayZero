@@ -16,7 +16,8 @@ public class ModelLoader {
             OrtEnvironment env = OrtEnvironment.getEnvironment();
             OrtSession.SessionOptions opt = new OrtSession.SessionOptions();
 
-            try(InputStream stream = getClass().getResourceAsStream("resources/mlresource/model.onnx")){
+            try(InputStream stream = getClass().getResourceAsStream("resources/mlresource/model.onnx")){ //revisar
+            // try(InputStream stream = getClass().getResourceAsStream("flight_delay_rf.onnx")){
                 if(stream != null){
                     byte[] model = stream.readAllBytes();
                     return env.createSession(model, opt);
