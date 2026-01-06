@@ -1,21 +1,13 @@
 package com.aluraone.delayzero.service.ml;
 
-<<<<<<< HEAD
+import com.aluraone.delayzero.dto.in.PredictionRequest;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FeatureBuilder {
-
-=======
-import com.aluraone.delayzero.dto.in.PredictionRequest;
 
 public class FeatureBuilder {
 
-    private PredictionRequest flightData;
-
-    public FeatureBuilder(PredictionRequest flightData){
-        this.flightData = flightData;
+    public float[] build(PredictionRequest request) {
+        return null;
     }
-
->>>>>>> bceeafbbcba7cdc3a4c3020f2cdd0d05c1c22740
 }
