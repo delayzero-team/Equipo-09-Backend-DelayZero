@@ -23,7 +23,7 @@ body {
 
 /*PRINCIPAL*/
 
-.principal {
+.header-banner {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,19 +32,19 @@ body {
 
     background-repeat: no-repeat;
 
-    background-image: url("/assets/imagenBase.png");
+    background-image: url("../assets/imagenBase.png");
     background-position: center;
     background-size: cover;
 }
 
-.principal__image {
+.header-banner__image {
     margin: 0 0 98px 0;
     width: 401px;
 
     border-radius: 20px;
 }
 
-h1 {
+.header-banner__title {
     margin: 0 0 141px 0;
 
     font-size: 3.45rem;
@@ -53,7 +53,7 @@ h1 {
     color: var(--secondary-color);
 }
 
-.principal__text {
+.header-banner__text {
     margin: 0 0 75px 0;
     width: 530px;
 
@@ -64,11 +64,11 @@ h1 {
     text-align: center;
 }
 
-.bold__text {
+.bold-text {
     font-weight: bold;
 }
 
-.principal__consult {
+.header-banner__consult {
     font-size: 28px;
     font-family: var(--font-inter);
     font-weight: bold;
@@ -86,14 +86,16 @@ h1 {
     transition: 0.3s;
 }
 
-.principal__consult:hover {
+.header-banner__consult:hover {
     background-color: var(--quartertiary-color);
-    box-shadow: 0 0px 8px 1px var(--tertiary-color);
 }
 
 /*INFORMATION ABOUT APP*/
+.about-app {
+    margin: 0 0 108px;
+}
 
-h2 {
+.about-app__title {
     font-size: 2.2rem;
     font-family: var(--font-inter);
     font-weight: 300;
@@ -103,13 +105,13 @@ h2 {
     margin: 74px  0 85px 0;
 }
 
-.aboutApp__div {
+.about-app__container {
     display: flex;
     justify-content: center;
     gap: 90px;
 }
 
-.aboutApp__div__title {
+.about-app__subtitle {
     font-size:1.75rem;
     font-family: var(--font-inter);
     font-weight: 300;
@@ -118,14 +120,14 @@ h2 {
     margin: 3.3rem 0 0 0;
 }
 
-.aboutApp__div__information {
+.about-app__information {
     display: flex;
     flex-direction: column;
     text-align: end;
     gap: 15px;
 }
 
-.aboutApp__div__information__text{
+.about-app__text{
     width: 651px;
     padding: 33px 36px;
 
@@ -139,7 +141,7 @@ h2 {
     border-radius: 20px;
 }
 
-.aboutApp__div__information__git {
+.about-app__git {
     font-size: 1.13rem;
     font-family: var(--font-inter);
     color: var(--secondary-color);
@@ -147,53 +149,33 @@ h2 {
     text-decoration: none;
 }
 
-.aboutApp__div__information__git:hover {
+.about-app__git:hover {
     text-decoration: underline
 }
 
-.aboutApp__div__information__arrow {
+.edit-icon {
     font-size: 1.5rem;
-}
-
-/*FOOTER*/
-
-.footerPag {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-
-    padding: 40px 0;
-    margin: 108px 0 0 0;
-    border-top: 0.1px solid var(--tertiary-color);
-}
-
-.footerPag__text {
-    font-size: 16px;
-    font-family: var(--font-inter);
-    font-weight: 300;
-    color: var(--secondary-color);
 }
 
 /* --------------- // ----------------*/
 
 @media (min-width: 1700px) {
 
-    .principal__image {
+    .header-banner__image {
         margin: 0 0 250px 0;
     }
 
-    h1 {
+    .header-banner__title{
         margin: 0 0 250px 0;
 
         font-size: 3.75rem;
     }
 
-    .principal__text {
+    .header-banner__text {
         margin: 0 0 130px 0;
     }
 
-    .principal__consult {
+    .header-banner__consult {
         margin: 0 0 70px 0;
     }
     

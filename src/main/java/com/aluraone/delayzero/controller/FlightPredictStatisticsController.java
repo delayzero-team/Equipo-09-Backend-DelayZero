@@ -25,22 +25,25 @@ public class FlightPredictStatisticsController {
         var air1 = new StatisticsByAirline("Aerolinea1", 45);
         var air2 = new StatisticsByAirline("Aerolinea2", 5);
         var air3 = new StatisticsByAirline("Aerolinea3", 65);
+        var air4 = new StatisticsByAirline("Aerolinea4", 88);
 
-        List<StatisticsByAirline> airlineData = List.of(air1, air2, air3);
+        List<StatisticsByAirline> airlineData = List.of(air1, air2, air3, air4);
 
         //Datos ficticios origen:
         var origin1 = new StatisticsByOrigin("Origen1", 56);
         var origin2 = new StatisticsByOrigin("Origen2", 26);
         var origin3 = new StatisticsByOrigin("Origen3", 45);
+        var origin4 = new StatisticsByOrigin("Origen4", 90);
 
-        List<StatisticsByOrigin> originData = List.of(origin1, origin2, origin3);
+        List<StatisticsByOrigin> originData = List.of(origin1, origin2, origin3, origin4);
 
         //Datos ficticios hora:
         var hour1 = new HourlyStatistics(10, 0.4);
         var hour2 = new HourlyStatistics(14, 0.23);
         var hour3 = new HourlyStatistics(4, 0.78);
+        var hour4 = new HourlyStatistics(8, 0.89);
 
-        List<HourlyStatistics> hourData = List.of(hour1, hour2, hour3);
+        List<HourlyStatistics> hourData = List.of(hour1, hour2, hour3, hour4);
 
         CompleteStatisticalData statsData = new CompleteStatisticalData(
                 45,

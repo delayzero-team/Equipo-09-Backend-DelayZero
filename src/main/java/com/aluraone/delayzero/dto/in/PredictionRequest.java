@@ -9,7 +9,7 @@ public record PredictionRequest(
         @NotBlank String origenVuelo,
         @NotBlank String destinoVuelo,
         /* Buscar como formatear LocalDateTime en el json de entrada */
-        //@NotNull LocalDateTime fechaPartidaVuelo,
+        @NotNull LocalDateTime fechaPartidaVuelo,
         int distanciaKilometros
 ) {
 }

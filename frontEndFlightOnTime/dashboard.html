@@ -1,32 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>FlightOnTime</title>
-    </head>
-    <body>
-        <h1>✈️ FlightOn<strong class="bold__text">Time</strong></h1>
+<head>
+    <meta charset="UTF-8">
+    <title>FlightOnTime</title>
+    <link rel="stylesheet" href="./styles/dashboard.css">
+    <link rel="stylesheet" href="./styles/footer.css">
+</head>
+<body>
+    <header class="header-banner">
+         <h1 class="header-banner__title">✈️ FlightOn<strong class="bold-text">Time</strong></h1>
+    </header>
+
+    <main class="main-content">
         <section class="form">
             <p class="form__indication">Ingrese los siguientes datos para la consulta:</p>
-            <form class="form__container">
-                <label class="form__container__label" for="form__container__airline">Nombre Aerolinea</label>
-                <input id="form__container__airline" class="form__container__input" type="text" placeholder="Ingrese...">
-                
-                <label class="form__container__label" for="form__container__origin">Origen Vuelo</label>
-                <input id="form__container__origin" class="form__container__input"  type="text" placeholder="Ingrese...">
-                
-                <label class="form__container__label" for="form__container__destination">Destino Vuelo</label>
-                <input id="form__container__destination" class="form__container__input"  type="text" placeholder="Ingrese...">
-                
-                <label class="form__container__label" for="form__container__date">Fecha salida Vuelo</label>
-                <input id="form__container__date" class="form__container__input"  type="text" placeholder="Ingrese...">
-                
-                <label class="form__container__label" for="form__container__distance">Distancia aproximada</label>
-                <input id="form__container__distance" class="form__container__input" type="number" placeholder="Ingrese...">
+            <form class="form-container" >
+                <div class="form-grid">
+                    <div class="div-container">
+                        <label class="div-container__label" for="nameAirline">Nombre Aerolinea</label>
+                        <input id="nameAirline" class="div-container__input" type="text" placeholder="Ingrese..." required>
+                    </div>
+                    
+                    <div class="div-container">
+                        <label class="div-container__label" for="flightOrigin">Origen Vuelo</label>
+                        <input id="flightOrigin" class="div-container__input"  type="text" placeholder="Ingrese..." required>
+                    </div>
+                    
+                    <div class="div-container">
+                        <label class="div-container__label" for="flightDestination">Destino Vuelo</label>
+                        <input id="flightDestination" class="div-container__input"  type="text" placeholder="Ingrese..." required>
+                    </div>
+                    
+                    <div class="div-container">
+                        <label class="div-container__label" for="flightDate">Fecha salida Vuelo</label>
+                        <input id="flightDate" class="div-container__input"  type="text" placeholder="Ingrese..." required>
+                    </div>
+                    
+                    <div class="div-container">
+                        <label class="div-container__label" for="distance">Distancia aproximada</label>
+                        <input id="distance" class=" div-container__input" type="number" placeholder="Ingrese..." required>
+                    </div>
+                </div>
+                <button id="submit-button" class="form-container__button" type="submit" >Consultar</button>
             </form>
-            <button class="form__button" type="button">Consultar</button>
         </section>
-        <p>Resultados consulta:</p>
-    </body>
 
+        <section class="query-result">
+            <h2 class="query-result__title">Resultados consulta: </h2>
+            <div id="result-container">
+                <div class="query-result__cards">
+                    <div class="card">
+                        <h3 class="card__title">Prevision</h3>
+                        <hr class="card__separator" />
+                        <p id="result-prevision" class="card__value">0</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card__title">Probabilidad</h3>
+                        <hr class="card__separator" />
+                        <p id="result-probability" class="card__value">0</p>
+                    </div> 
+                </div>
+            </div>
+            <p id="information" class="query-result__information">⚠️ Realice una consulta.</p>
+        </section>
+
+        <section class="statistics">
+            <h2 class="statistics__title"><strong class="bold-text">Estadísticas</strong> - Monitoreo en tiempo real de predicciones.</h2>
+            <button id="update-button" class="statistics__update-button" type="button">🔄 Actualizar</button>
+            <div id="loading" class="statistics__loading">Cargando datos...</div>
+            <div id="error" class="statistics__error"></div>
+            <div id="cards-container">
+                <div id="statistics__cards" class="statistics__cards">
+                    <div class="statistic-card">
+                        <p class="statistic-card__icon">📊</p>
+                        <h3 class="statistic-card__title">Total predicciones</h3>
+                        <p id="totalPredictions" class="statistic-card__value">0</p>
+                    </div>
+
+                    <div class="statistic-card">
+                        <p class="statistic-card__icon">✅</p>
+                        <h3 class="statistic-card__title">Vuelos puntuales</h3>
+                        <p id="totalPunctualFlights" class="statistic-card__value">0</p>
+                    </div>
+
+                    <div class="statistic-card">
+                        <p class="statistic-card__icon">⚠️</p>
+                        <h3 class="statistic-card__title">Vuelos retrasados</h3>
+                        <p id="totalFlightsDalayed" class="statistic-card__value">0</p>
+                    </div>
+
+                    <div class="statistic-card">
+                        <p class="statistic-card__icon">📈</p>
+                        <h3 class="statistic-card__title">% retrasados</h3>
+                        <p id="percentageDelayed" class="statistic-card__value">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="statistics__separator"/>
+            <div id="cardsGraphics-container">
+                <div id="statistics__graphics-cards" class="statistics__graphics-cards">
+                    <div class="graphic-card">
+                        <h3 class="graphic-card__title">Retrasos por Aerolínea</h3>
+                        <hr class="graphic-card__separator" />
+                        <div id="airportsChart" class="graphic-card__bars"></div>
+                    </div>
+
+                    <div class="graphic-card">
+                        <h3 class="graphic-card__title">Retrasos por Aeropuerto</h3>
+                        <hr class="graphic-card__separator" />
+                        <div id="airlinesChart" class="graphic-card__bars"></div>
+                    </div>
+
+                    <div class="graphic-card">
+                        <h3 class="graphic-card__title">Probabilidad de retraso por hora</h3>
+                        <hr class="graphic-card__separator" />
+                        <div id="hoursChart" class="graphic-card__bars"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-pag">
+        <p class="footer-pag__text">© DelayZero - FlightOn<strong class="bold-text">Time</strong>. Todos los derechos reservados</p>
+        <p class="footer-pag__text">Creado con ❤️ por el <strong class="bold-text">Equipo 09</strong>, Alura</p>
+    </footer>
+
+    <script type="module" src="./scripts/statistics.js"></script>
+    <script type="module" src="./scripts/prediction.js"></script>
+</body>
 </html>
