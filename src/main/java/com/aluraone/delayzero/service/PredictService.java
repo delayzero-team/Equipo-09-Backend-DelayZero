@@ -19,12 +19,8 @@ public class PredictService {
     @Autowired
     Predictor predictor;
 
-    public PredictionData callModel(PredictionRequest request){
+    public PredictionData callModel(PredictionRequest request) throws Exception {
         float [] features = builder.build(request);
-
-        System.out.println(Arrays.toString(features));
-
         return predictor.processPrediction(features);
-
     }
 }
