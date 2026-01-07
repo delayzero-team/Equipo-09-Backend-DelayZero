@@ -20,23 +20,27 @@ public class Predictor {
     private OrtEnvironment environment;
 
     public PredictionData processPrediction(float[] features){
+       //Contexto global ONNX
         environment = loader.getEnv();
+        //Modelo ONNX ya cargado en memoria
         session = loader.getSession();
-
+        //Validacion del input
         if (features == null || features.length == 0) throw new IllegalArgumentException("Features array is empty");
-
+        //Estructurar forma del tensor
         long[] shape = new long[]{1, features.length};
+        //Crear el tensor de entreda ONNX
         try(OnnxTensor inputTensor = OnnxTensor
                 .createTensor(environment,
                         FloatBuffer.wrap(features),
                         shape)){
             //Ejecuta inferencia
             OrtSession.Result result = session.run(Map.of("input", inputTensor));
-            //Obt
+            //Extrar el label de la clase predicha
             long [] labelArr = (long[]) result.get(0).getValue();
             int prediction = (int) labelArr[0];
+            //Convertir prediccion a String
+            String predictionString = prediction == 1 ? "Retrasado" : "Puntual";
 
-            String predictionString = prediction == 1 ? "Delay" : "On time";
 
             float delayProbability =
                     ((Map<Long, Float>[]) result.get(1).getValue())[0]
