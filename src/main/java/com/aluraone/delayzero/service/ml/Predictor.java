@@ -1,39 +1,50 @@
 package com.aluraone.delayzero.service.ml;
 
 import ai.onnxruntime.OnnxTensor;
-import ai.onnxruntime.OnnxValue;
+import ai.onnxruntime.OrtEnvironment;
 import ai.onnxruntime.OrtSession;
 import com.aluraone.delayzero.dto.out.PredictionData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
+import java.nio.FloatBuffer;
 import java.util.Map;
-import java.util.Optional;
 
 @Component
 public class Predictor {
 
     @Autowired
     private ModelLoader loader;
-
+    @Autowired
     private OrtSession session;
+    @Autowired
+    private OrtEnvironment environment;
 
-    public PredictionData processPrediction(float[] features) throws Exception {
-
-        loader.init();
+    public PredictionData processPrediction(float[] features){
+        environment = loader.getEnv();
         session = loader.getSession();
-        var inputData = OnnxTensor.createTensor(loader.getEnv(), features);
-        Map<String, OnnxTensor> inputs = new HashMap<>();
-        inputs.put("input", inputData);
 
-        try(var results = session.run(inputs)){
-            float value = (float) results.get(1).getValue();
+        if (features == null || features.length == 0) throw new IllegalArgumentException("Features array is empty");
 
-            String resultado;
-            resultado = value >= 0.6 ? "Atrasado" : "A tiempo";
-            return new PredictionData(resultado, value);
+        long[] shape = new long[]{1, features.length};
+        try(OnnxTensor inputTensor = OnnxTensor
+                .createTensor(environment,
+                        FloatBuffer.wrap(features),
+                        shape)){
+            //Ejecuta inferencia
+            OrtSession.Result result = session.run(Map.of("input", inputTensor));
+            //Obt
+            long [] labelArr = (long[]) result.get(0).getValue();
+            int prediction = (int) labelArr[0];
+
+            String predictionString = prediction == 1 ? "Delay" : "On time";
+
+            float delayProbability =
+                    ((Map<Long, Float>[]) result.get(1).getValue())[0]
+                            .getOrDefault(1L, 0.0f);
+
+            return new PredictionData(predictionString, delayProbability);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
     }
 }
