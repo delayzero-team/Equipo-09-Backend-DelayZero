@@ -14,9 +14,8 @@ public class Predictor {
 
     @Autowired
     private ModelLoader loader;
-    @Autowired
+
     private OrtSession session;
-    @Autowired
     private OrtEnvironment environment;
 
     public PredictionData processPrediction(float[] features){
