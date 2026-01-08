@@ -14,6 +14,7 @@ import java.io.InputStream;
 public class ModelLoader {
 
     private OrtSession session;
+
     private OrtEnvironment env;
 
     @PostConstruct
@@ -24,7 +25,7 @@ public class ModelLoader {
                      new ClassPathResource("mlresource/flight_delay_rf.onnx")
                              .getInputStream()) {
 
-            OrtEnvironment env = OrtEnvironment.getEnvironment();
+            env = OrtEnvironment.getEnvironment();
             session = env.createSession(is.readAllBytes());
 
         } catch (Exception e) {
