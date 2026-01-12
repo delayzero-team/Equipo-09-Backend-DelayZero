@@ -53,10 +53,10 @@ public class FeatureBuilder {
             switch (col) {
                 case "AIRLINE" ->
                     features[idx++] = encode("IATA_CODE", request.nombreAerolinea()); // Usa IATA_CODE para códigos como "AA", "AZ"
-                case "ORIGIN_AIRPORT" ->
-                    features[idx++] = encode("ORIGIN_AIRPORT", request.origenVuelo());
-                case "DESTINATION_AIRPORT" ->
-                    features[idx++] = encode("DESTINATION_AIRPORT", request.destinoVuelo());
+                case "ORIGIN" ->
+                    features[idx++] = encode("ORIGIN", request.origenVuelo());
+                case "DESTINATION" ->
+                    features[idx++] = encode("DESTINATION", request.destinoVuelo());
                 case "MONTH" ->
                     features[idx++] = departure.getMonthValue();
                 case "DAY" ->

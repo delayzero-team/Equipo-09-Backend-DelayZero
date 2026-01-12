@@ -3,27 +3,46 @@ package com.aluraone.delayzero.service.ml;
 import ai.onnxruntime.OrtEnvironment;
 import ai.onnxruntime.OrtException;
 import ai.onnxruntime.OrtSession;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
+import lombok.Getter;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 
 @Component
+@Getter
 public class ModelLoader {
 
-    public OrtSession loadModel(){
-        try {
-            OrtEnvironment env = OrtEnvironment.getEnvironment();
-            OrtSession.SessionOptions opt = new OrtSession.SessionOptions();
+    private Map<String, Map<String, Integer>> labelEncoders;
+    private List<String> featureColumns;
+    private OrtSession session;
+    private OrtEnvironment env;
 
-            try(InputStream stream = getClass().getResourceAsStream("resources/mlresource/model.onnx")){ //revisar
-            // try(InputStream stream = getClass().getResourceAsStream("flight_delay_rf.onnx")){
-                if(stream != null){
-                    byte[] model = stream.readAllBytes();
-                    return env.createSession(model, opt);
-                }
-            }
-        } catch(IOException | OrtException ignored){ return null; }
-        return null;
+    @PostConstruct
+    public void init() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        labelEncoders = mapper.readValue(
+                new ClassPathResource("resources/mlresource/label_encoders.json").getInputStream(),
+                new TypeReference<>() {}
+        );
+        featureColumns = mapper.readValue(
+                new ClassPathResource("resources/mlresource/feature_columns.json").getInputStream(),
+                new TypeReference<>() {}
+        );
+
+        env = OrtEnvironment.getEnvironment();
+        session = env.createSession(
+                new ClassPathResource("resources/mlresource/flight_delay_rf.onnx")
+                        .getFile()
+                        .getAbsolutePath(),
+                new OrtSession.SessionOptions()
+        );
     }
+
 }
