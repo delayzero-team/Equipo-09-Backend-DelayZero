@@ -14,7 +14,7 @@
     padding: 0;
     margin: 0;
 }
-
+/*--- STYLES HEADER-BANNER ---*/
 .header-banner {
     margin: 44px 0 75px 56px;
 }
@@ -72,17 +72,25 @@
     margin: 0 0 13px 12px;
 }
 
-
-.div-container__input {
-    width: 263px;
+.div-container__input,  .div-container__select-airline{
+    width: 253px;
 
     font-size: 1.13rem;
 
-    padding:  10px 0 10px 20px;
+    padding:  10px 10px 10px 20px;
     border-radius: 10px;
     border: none;
 
     background-color: var(--quartertiary-color);
+}
+
+.div-container__select-airline {
+    width: 283px;
+}
+
+.div-container__select-airline:hover {
+    padding: 8px 8px 8px 18px;
+    border: 2px solid black;
 }
 
 .div-container__input::placeholder {
@@ -177,7 +185,7 @@
     font-weight: 400;
 }
 
-/*STYLES STATISTICS*/
+/*--- STYLES STATISTICS ---*/
 .statistics {
     background-color: var(--primary-color);
     font-family: var(--font-inter);
@@ -233,9 +241,9 @@
     background-color: var(--quartertiary-color);
     padding: 20px 30px;
     border-radius: 10px;
-
 }
 
+/*--- STYLES STATISTICS-CARDS ---*/
 .statistics__cards {
     display: grid;
     grid-template-columns: auto auto auto;
@@ -282,6 +290,7 @@
     background-color: var(--quartertiary-color);   
 }
 
+/*--- STYLES STATISTICS GRAPHICS-CARDS ---*/
 .statistics__graphics-cards {
     display: grid;
     grid-template-columns: auto auto;
