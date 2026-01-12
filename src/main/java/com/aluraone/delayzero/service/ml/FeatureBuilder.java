@@ -4,6 +4,7 @@ import com.aluraone.delayzero.dto.in.PredictionRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -23,12 +24,12 @@ public class FeatureBuilder {
         ObjectMapper mapper = new ObjectMapper();
 
         // Cargar orden de columnas
-        try (InputStream columnsStream = getClass().getResourceAsStream("feature_columns.json")) {
+        try (InputStream columnsStream = new ClassPathResource("mlresource/feature_columns.json").getInputStream()) {
             featureOrder = mapper.readValue(columnsStream, new TypeReference<List<String>>() {});
         }
 
         // Cargar encoders
-        try (InputStream encodersStream = getClass().getResourceAsStream("label_encoders.json")) {
+        try (InputStream encodersStream = new ClassPathResource("mlresource/label_encoders.json").getInputStream()) {
             encoders = mapper.readValue(encodersStream, new TypeReference<Map<String, Map<String, Integer>>>() {});
         }
     }
@@ -53,10 +54,10 @@ public class FeatureBuilder {
             switch (col) {
                 case "AIRLINE" ->
                     features[idx++] = encode("IATA_CODE", request.nombreAerolinea()); // Usa IATA_CODE para códigos como "AA", "AZ"
-                case "ORIGIN" ->
-                    features[idx++] = encode("ORIGIN", request.origenVuelo());
-                case "DESTINATION" ->
-                    features[idx++] = encode("DESTINATION", request.destinoVuelo());
+                case "ORIGIN_AIRPORT" ->
+                    features[idx++] = encode("ORIGIN_AIRPORT", request.origenVuelo());
+                case "DESTINATION_AIRPORT" ->
+                    features[idx++] = encode("DESTINATION_AIRPORT", request.destinoVuelo());
                 case "MONTH" ->
                     features[idx++] = departure.getMonthValue();
                 case "DAY" ->
@@ -71,6 +72,7 @@ public class FeatureBuilder {
                     throw new IllegalArgumentException("Columna desconocida: " + col);
             }
         }
+
         return features;
     }
 }

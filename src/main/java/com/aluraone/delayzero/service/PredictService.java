@@ -8,8 +8,6 @@ import com.aluraone.delayzero.service.ml.Predictor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-
 @Service
 public class PredictService {
 
@@ -19,7 +17,7 @@ public class PredictService {
     @Autowired
     Predictor predictor;
 
-    public PredictionData callModel(PredictionRequest request) throws Exception {
+    public PredictionData callModel(PredictionRequest request){
         float [] features = builder.build(request);
         return predictor.processPrediction(features);
     }
