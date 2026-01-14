@@ -7,7 +7,7 @@ import lombok.Getter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import com.aluraone.delayzero.infra.exception.PredictionException;
+import com.aluraone.delayzero.infra.exception.PredictionTechnicalException;
 
 import java.io.InputStream;
 
@@ -20,21 +20,16 @@ public class ModelLoader {
     private OrtEnvironment env;
 
     @PostConstruct
-    public void init() throws PredictionException {
-
-
-        try (InputStream is =
-                     new ClassPathResource("mlresource/flight_delay_rf.onnx")
-                             .getInputStream()) {
-
+    public void init() {
+        try (InputStream is = new ClassPathResource("ml/flight_delay_rf.onnx").getInputStream()) {
             env = OrtEnvironment.getEnvironment();
             session = env.createSession(is.readAllBytes());
-
         } catch (Exception e) {
-            throw new PredictionException(
-                PredictionException.MODEL_INITIALIZATION_ERROR, e
+            throw new PredictionTechnicalException(
+                PredictionTechnicalException.MODEL_LOAD_FAILED,
+                "No se pudo cargar el modelo ONNX flight_delay_rf.onnx",
+                e
             );
         }
     }
-
 }
