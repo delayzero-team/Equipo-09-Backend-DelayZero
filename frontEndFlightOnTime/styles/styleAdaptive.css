@@ -1,0 +1,53 @@
+@media (min-width: 1700px) {
+
+    .header-banner__image {
+        margin: 0 0 250px 0;
+    }
+
+    .header-banner__title{
+        margin: 0 0 250px 0;
+
+        font-size: 3.75rem;
+    }
+
+    .header-banner__text {
+        margin: 0 0 130px 0;
+    }
+
+    .header-banner__consult {
+        margin: 0 0 70px 0;
+    }
+    
+}
+
+@media (max-width: 950px) {
+
+    .about-app__text {
+        width: 500px;
+    }
+
+    .about-app__container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .header-banner {
+        background-image: url("../assets/imagenBasePhone.png");
+    }
+
+    .header-banner__image {
+        width: 300px;
+    }
+
+    .header-banner__text {
+        width: 300px;
+    }
+
+    .about-app__text {
+        width: 300px;
+        padding: 10px 15px;
+    }
+}
