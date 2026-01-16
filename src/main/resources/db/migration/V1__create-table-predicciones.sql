@@ -6,6 +6,6 @@ destino_vuelo VARCHAR(100),
 fecha_vuelo DATE,
 hora_vuelo TIME,
 distancia_kilometros INT,
-vuelo_atrasado BOOL,
-probabilidad_atraso FLOAT
+vuelo_retrasado BOOL,
+probabilidad_retraso FLOAT
 );
