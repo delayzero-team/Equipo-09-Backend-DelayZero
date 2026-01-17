@@ -7,6 +7,7 @@ import com.aluraone.delayzero.dto.out.StatisticsByAirline;
 import com.aluraone.delayzero.dto.out.HourlyStatistics;
 import com.aluraone.delayzero.dto.out.StatisticsByOrigin;
 import com.aluraone.delayzero.infra.response.ResponseHandler;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@Tag(name = "Statistics", description = "Retrieve flight delay statistics")
 @RequestMapping("/statistics")
 public class FlightPredictStatisticsController {
 
