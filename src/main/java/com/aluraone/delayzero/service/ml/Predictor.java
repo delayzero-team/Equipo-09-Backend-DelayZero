@@ -39,32 +39,16 @@ public class Predictor {
             //Convertir prediccion a String
             String predictionString = prediction == 1 ? "Retrasado" : "Puntual";
 
-            /*
-            System.out.println(result.get(1).getValue() instanceof Map<?,?> ? "es map" : "no es map");
-            System.out.println(result.get(1).getValue() instanceof List<?> ? "es lista" : "no es lista");
-
-            System.out.println(result.get(1).getValue());
-            System.out.println("Valor Secuencia Onnx: " + result.get(1));
-            */
-
             // Se optiene una secuencia Onnx:
-            OnnxSequence map = (OnnxSequence) result.get(1);
+            OnnxSequence onnxSequence = (OnnxSequence) result.get(1);
 
-            System.out.println("Secuencia Onnx: " + map);
-            System.out.println("Valor ONNXMap: " + map.getValue().get(0));
+            // Se obtiene el OnnxMap:
+            OnnxMap onnxMap = (OnnxMap) onnxSequence.getValue().get(0);
+            
+            float probabilityPrediction = ((Map<Long, Float>) onnxMap.getValue())
+                    .getOrDefault( (predictionString.equals("Puntual") ? 0L : 1L) , 0.0f);
 
-            //Se obtiene el OnnxMap:
-            OnnxMap mape = (OnnxMap) map.getValue().get(0);
-
-            System.out.println("Onnx Map: " + mape);
-            System.out.println(mape.getValue()); //Se obtienen los valores.
-
-            float delayProbability;
-            delayProbability = ((Map<Long, Float>) mape.getValue())
-                    .getOrDefault(1L, 0.0f);
-            System.out.println(delayProbability);
-
-            return new PredictionData(predictionString, delayProbability);
+            return new PredictionData(predictionString, probabilityPrediction);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
