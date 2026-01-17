@@ -54,7 +54,7 @@ async function showStatistics() {
                 
         horas.forEach(hora => {
             const probabilidadPorcentaje = hora.probabilidadPromedioRetraso * 100;
-                hoursDiv.innerHTML += crearBarra(`${hora.hora}:00`,probabilidadPorcentaje,`${probabilidadPorcentaje.toFixed(1)}%`);
+                hoursDiv.innerHTML += crearBarra(`${hora.hora}`,probabilidadPorcentaje,`${probabilidadPorcentaje.toFixed(1)}%`);
 
         });
     }

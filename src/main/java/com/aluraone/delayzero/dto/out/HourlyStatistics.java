@@ -1,7 +1,9 @@
 package com.aluraone.delayzero.dto.out;
 
+import java.sql.Time;
+
 public record HourlyStatistics(
-        int hora,
+        Time hora,
         double probabilidadPromedioRetraso
 ) {
 }
