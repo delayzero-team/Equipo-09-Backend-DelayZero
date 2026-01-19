@@ -33,9 +33,9 @@ public class FeatureBuilder {
             }
         } catch (IOException e) {
             throw new PredictionTechnicalException(
-                PredictionTechnicalException.FILE_NOT_FOUND,
-                "No se pudieron cargar los archivos de configuración ML (feature_columns o label_encoders)",
-                e
+                    PredictionTechnicalException.FILE_NOT_FOUND,
+                    "Error al cargar archivos de configuración ML (feature_columns.json o label_encoders.json)",
+                    e
             );
         }
     }
@@ -44,31 +44,44 @@ public class FeatureBuilder {
         Map<String, Integer> encoder = encoders.get(encoderName);
         if (encoder == null) {
             throw new PredictionTechnicalException(
-                PredictionTechnicalException.FEATURE_BUILDER_FAILED,
-                "Encoder no encontrado: " + encoderName
+                    PredictionTechnicalException.FEATURE_BUILDER_FAILED,
+                    "Encoder no encontrado para: " + encoderName
             );
         }
 
-        String key = value != null ? value.toUpperCase() : "nan";
+        if (value == null) {
+            Integer nanValue = encoder.get("nan");
+            if (nanValue == null) {
+                throw new PredictionTechnicalException(
+                        PredictionTechnicalException.UNEXPECTED_ERROR,
+                        "No se encontró 'nan' en el encoder " + encoderName + " para valor nulo"
+                );
+            }
+            return nanValue.floatValue();
+        }
+
+        String key = value.toUpperCase();
         Integer encoded = encoder.get(key);
-        if (encoded == null && !encoder.containsKey("nan")) {
-            String code = encoderName.equals("IATA_CODE")
-                ? PredictionBusinessException.INVALID_AIRLINE_CODE
-                : PredictionBusinessException.INVALID_AIRPORT_CODE;
+
+        if (encoded == null) {
+            String errorCode = encoderName.equals("IATA_CODE")
+                    ? PredictionBusinessException.INVALID_AIRLINE_CODE
+                    : PredictionBusinessException.INVALID_AIRPORT_CODE;
             throw new PredictionBusinessException(
-                code,
-                "Código inválido o no soportado: " + value + " para " + encoderName
+                    errorCode,
+                    "Código inválido o no registrado en el dataset: '" + value + "' para " + encoderName +
+                            ". Usa solo códigos válidos (ej: AA para aerolínea, JFK para aeropuerto)."
             );
         }
 
-        return encoded != null ? encoded.floatValue() : encoder.get("nan").floatValue();
+        return encoded.floatValue();
     }
 
     public float[] build(PredictionRequest request) {
         if (request == null || request.fechaPartidaVuelo() == null) {
             throw new PredictionBusinessException(
-                PredictionBusinessException.MISSING_REQUIRED_FIELD,
-                "Solicitud inválida: faltan datos requeridos (especialmente fechaPartidaVuelo)"
+                    PredictionBusinessException.MISSING_REQUIRED_FIELD,
+                    "Solicitud inválida: faltan datos requeridos (especialmente fechaPartidaVuelo)"
             );
         }
 
@@ -89,27 +102,20 @@ public class FeatureBuilder {
                     case "DISTANCE" -> {
                         if (request.distanciaKilometros() <= 0) {
                             throw new PredictionBusinessException(
-                                PredictionBusinessException.INVALID_DISTANCE,
-                                "La distancia debe ser mayor a 0 km"
+                                    PredictionBusinessException.INVALID_DISTANCE,
+                                    "La distancia debe ser mayor a 0 km"
                             );
                         }
                         features[idx++] = request.distanciaKilometros();
                     }
                     default -> throw new PredictionTechnicalException(
-                        PredictionTechnicalException.UNEXPECTED_ERROR,
-                        "Columna desconocida en featureOrder: " + col
+                            PredictionTechnicalException.UNEXPECTED_ERROR,
+                            "Columna desconocida en featureOrder: " + col
                     );
                 }
             }
         } catch (Exception e) {
-            if (e instanceof PredictionBusinessException || e instanceof PredictionTechnicalException) {
-                throw e;
-            }
-            throw new PredictionTechnicalException(
-                PredictionTechnicalException.FEATURE_BUILDER_FAILED,
-                "Error inesperado al construir features",
-                e
-            );
+            throw e;
         }
 
         return features;
