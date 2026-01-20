@@ -1,12 +1,21 @@
 package com.aluraone.delayzero.service.ml;
 
-import ai.onnxruntime.*;
-import com.aluraone.delayzero.dto.out.PredictionData;
+import java.nio.FloatBuffer;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.nio.FloatBuffer;
-import java.util.List;
-import java.util.Map;
+
+import com.aluraone.delayzero.dto.out.PredictionData;
+import com.aluraone.delayzero.infra.exception.PredictionBusinessException;
+import com.aluraone.delayzero.infra.exception.PredictionTechnicalException;
+
+import ai.onnxruntime.OnnxMap;
+import ai.onnxruntime.OnnxSequence;
+import ai.onnxruntime.OnnxTensor;
+import ai.onnxruntime.OrtEnvironment;
+import ai.onnxruntime.OrtException;
+import ai.onnxruntime.OrtSession;
 
 @Component
 public class Predictor {
@@ -14,59 +23,64 @@ public class Predictor {
     @Autowired
     private ModelLoader loader;
 
-    private OrtSession session;
-    private OrtEnvironment environment;
+    public PredictionData processPrediction(float[] features) {
 
-    public PredictionData processPrediction(float[] features){
-       //Contexto global ONNX
-        environment = loader.getEnv();
-        //Modelo ONNX ya cargado en memoria
-        session = loader.getSession();
-        //Validacion del input
-        if (features == null || features.length == 0) throw new IllegalArgumentException("Features array is empty");
-        //Estructurar forma del tensor
-        long[] shape = new long[]{1, features.length};
-        //Crear el tensor de entreda ONNX
-        try(OnnxTensor inputTensor = OnnxTensor
-                .createTensor(environment,
-                        FloatBuffer.wrap(features),
-                        shape)){
-            //Ejecuta inferencia
-            OrtSession.Result result = session.run(Map.of("float_input", inputTensor));
-            //Extrar el label de la clase predicha
-            long [] labelArr = (long[]) result.get(0).getValue();
-            int prediction = (int) labelArr[0];
-            //Convertir prediccion a String
-            String predictionString = prediction == 1 ? "Retrasado" : "Puntual";
+        if (features == null || features.length == 0) {
+            throw new PredictionBusinessException(
+                    PredictionBusinessException.MISSING_REQUIRED_FIELD,
+                    "El arreglo de características está vacío o nulo. No se puede realizar la predicción.");
+        }
 
-            /*
-            System.out.println(result.get(1).getValue() instanceof Map<?,?> ? "es map" : "no es map");
-            System.out.println(result.get(1).getValue() instanceof List<?> ? "es lista" : "no es lista");
+        OrtSession session = loader.getSession();
+        OrtEnvironment environment = loader.getEnv();
 
-            System.out.println(result.get(1).getValue());
-            System.out.println("Valor Secuencia Onnx: " + result.get(1));
-            */
+        if (session == null || environment == null) {
+            throw new PredictionTechnicalException(
+                    PredictionTechnicalException.MODEL_LOAD_FAILED,
+                    "El modelo ONNX no está inicializado correctamente. Verifica la carga en ModelLoader.");
+        }
 
-            // Se optiene una secuencia Onnx:
-            OnnxSequence map = (OnnxSequence) result.get(1);
+        try {
+            long[] shape = new long[] { 1, features.length };
+            try (OnnxTensor inputTensor = OnnxTensor.createTensor(
+                    environment,
+                    FloatBuffer.wrap(features),
+                    shape)) {
 
-            System.out.println("Secuencia Onnx: " + map);
-            System.out.println("Valor ONNXMap: " + map.getValue().get(0));
+                OrtSession.Result result = session.run(Map.of("float_input", inputTensor));
 
-            //Se obtiene el OnnxMap:
-            OnnxMap mape = (OnnxMap) map.getValue().get(0);
+                long[] labelArr = (long[]) result.get(0).getValue();
+                int prediction = (int) labelArr[0];
+                String prevision = (prediction == 1) ? "Retrasado" : "Puntual";
 
-            System.out.println("Onnx Map: " + mape);
-            System.out.println(mape.getValue()); //Se obtienen los valores.
+                OnnxSequence sequence = (OnnxSequence) result.get(1);
+                if (sequence == null || sequence.getValue().isEmpty()) {
+                    throw new PredictionTechnicalException(
+                            PredictionTechnicalException.ONNX_RUNTIME_ERROR,
+                            "No se obtuvieron probabilidades del modelo ONNX");
+                }
 
-            float delayProbability;
-            delayProbability = ((Map<Long, Float>) mape.getValue())
-                    .getOrDefault(1L, 0.0f);
-            System.out.println(delayProbability);
+                OnnxMap onnxMap = (OnnxMap) sequence.getValue().get(0);
+                Map<Long, Float> probMap = (Map<Long, Float>) onnxMap.getValue();
+                float delayProbability = probMap.getOrDefault(1L, 0.0f);
 
-            return new PredictionData(predictionString, delayProbability);
+                return new PredictionData(prevision, delayProbability);
+            }
+        } catch (OrtException e) {
+            throw new PredictionTechnicalException(
+                    PredictionTechnicalException.ONNX_RUNTIME_ERROR,
+                    "Error durante la ejecución del modelo ONNX",
+                    e);
+        } catch (ClassCastException e) {
+            throw new PredictionTechnicalException(
+                    PredictionTechnicalException.UNEXPECTED_ERROR,
+                    "Formato inesperado en la salida del modelo ONNX (posible incompatibilidad con el modelo exportado)",
+                    e);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new PredictionTechnicalException(
+                    PredictionTechnicalException.UNEXPECTED_ERROR,
+                    "Error inesperado al procesar la predicción",
+                    e);
         }
     }
 }

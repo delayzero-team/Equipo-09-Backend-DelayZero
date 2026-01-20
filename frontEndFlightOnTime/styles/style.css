@@ -157,27 +157,3 @@ body {
     font-size: 1.5rem;
 }
 
-/* --------------- // ----------------*/
-
-@media (min-width: 1700px) {
-
-    .header-banner__image {
-        margin: 0 0 250px 0;
-    }
-
-    .header-banner__title{
-        margin: 0 0 250px 0;
-
-        font-size: 3.75rem;
-    }
-
-    .header-banner__text {
-        margin: 0 0 130px 0;
-    }
-
-    .header-banner__consult {
-        margin: 0 0 70px 0;
-    }
-    
-}
-

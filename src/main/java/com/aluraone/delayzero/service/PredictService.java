@@ -5,6 +5,7 @@ import com.aluraone.delayzero.domain.entity.Prediction;
 import com.aluraone.delayzero.domain.repository.PredictionRepository;
 import com.aluraone.delayzero.dto.in.PredictionRequest;
 import com.aluraone.delayzero.dto.out.PredictionData;
+import com.aluraone.delayzero.infra.exception.PredictionBusinessException;
 import com.aluraone.delayzero.service.ml.FeatureBuilder;
 import com.aluraone.delayzero.service.ml.Predictor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,14 @@ import org.springframework.stereotype.Service;
 public class PredictService {
 
     @Autowired
-    FeatureBuilder builder;
+    private FeatureBuilder builder;
 
     @Autowired
-    Predictor predictor;
+    private Predictor predictor;
 
+<<<<<<< HEAD
     @Autowired
-    PredictionRepository pRepo;
+            PredictionRepository pRepo;
 
     public PredictionData startPrediction(PredictionRequest request){
 
@@ -41,11 +43,19 @@ public class PredictService {
         return returnData;
     }
 
-    private PredictionData callModel(PredictionRequest request){
+    public PredictionData callModel(PredictionRequest request) {
 
-        //PROBAR si realizar una misma consulta otra vez llama o no al modelo
-        System.out.println("modelo llamado");
-        float [] features = builder.build(request);
-        return predictor.processPrediction(features);
+        if (request == null) {
+            throw new PredictionBusinessException(
+                    PredictionBusinessException.MISSING_REQUIRED_FIELD,
+                    "La solicitud de predicción es nula");
+        }
+
+        try {
+            float[] features = builder.build(request);
+            return predictor.processPrediction(features);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }
