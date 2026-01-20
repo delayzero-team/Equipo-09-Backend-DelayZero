@@ -1,4 +1,4 @@
-/*FOOTER*/
+/*--- STYLES FOOTER ---*/
 
 .footer-pag {
     display: flex;
@@ -17,4 +17,11 @@
     font-family: var(--font-inter);
     font-weight: 300;
     color: var(--secondary-color);
+}
+
+@media (max-width: 700px) {
+    
+    .footer-pag {
+        text-align: center;
+    }
 }

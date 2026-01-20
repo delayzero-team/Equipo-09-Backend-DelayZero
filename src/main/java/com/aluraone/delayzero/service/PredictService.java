@@ -21,9 +21,8 @@ public class PredictService {
 
         if (request == null) {
             throw new PredictionBusinessException(
-                PredictionBusinessException.MISSING_REQUIRED_FIELD,
-                "La solicitud de predicción es nula"
-            );
+                    PredictionBusinessException.MISSING_REQUIRED_FIELD,
+                    "La solicitud de predicción es nula");
         }
 
         try {

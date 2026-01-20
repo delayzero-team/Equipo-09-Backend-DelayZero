@@ -1,14 +1,21 @@
 package com.aluraone.delayzero.service.ml;
 
-import ai.onnxruntime.*;
-import com.aluraone.delayzero.dto.out.PredictionData;
-import com.aluraone.delayzero.infra.exception.PredictionBusinessException;
-import com.aluraone.delayzero.infra.exception.PredictionTechnicalException;
+import java.nio.FloatBuffer;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.nio.FloatBuffer;
-import java.util.Map;
+import com.aluraone.delayzero.dto.out.PredictionData;
+import com.aluraone.delayzero.infra.exception.PredictionBusinessException;
+import com.aluraone.delayzero.infra.exception.PredictionTechnicalException;
+
+import ai.onnxruntime.OnnxMap;
+import ai.onnxruntime.OnnxSequence;
+import ai.onnxruntime.OnnxTensor;
+import ai.onnxruntime.OrtEnvironment;
+import ai.onnxruntime.OrtException;
+import ai.onnxruntime.OrtSession;
 
 @Component
 public class Predictor {
@@ -18,12 +25,10 @@ public class Predictor {
 
     public PredictionData processPrediction(float[] features) {
 
-
         if (features == null || features.length == 0) {
             throw new PredictionBusinessException(
-                PredictionBusinessException.MISSING_REQUIRED_FIELD,
-                "El arreglo de características está vacío o nulo. No se puede realizar la predicción."
-            );
+                    PredictionBusinessException.MISSING_REQUIRED_FIELD,
+                    "El arreglo de características está vacío o nulo. No se puede realizar la predicción.");
         }
 
         OrtSession session = loader.getSession();
@@ -31,13 +36,12 @@ public class Predictor {
 
         if (session == null || environment == null) {
             throw new PredictionTechnicalException(
-                PredictionTechnicalException.MODEL_LOAD_FAILED,
-                "El modelo ONNX no está inicializado correctamente. Verifica la carga en ModelLoader."
-            );
+                    PredictionTechnicalException.MODEL_LOAD_FAILED,
+                    "El modelo ONNX no está inicializado correctamente. Verifica la carga en ModelLoader.");
         }
 
         try {
-            long[] shape = new long[]{1, features.length};
+            long[] shape = new long[] { 1, features.length };
             try (OnnxTensor inputTensor = OnnxTensor.createTensor(
                     environment,
                     FloatBuffer.wrap(features),
@@ -52,9 +56,8 @@ public class Predictor {
                 OnnxSequence sequence = (OnnxSequence) result.get(1);
                 if (sequence == null || sequence.getValue().isEmpty()) {
                     throw new PredictionTechnicalException(
-                        PredictionTechnicalException.ONNX_RUNTIME_ERROR,
-                        "No se obtuvieron probabilidades del modelo ONNX"
-                    );
+                            PredictionTechnicalException.ONNX_RUNTIME_ERROR,
+                            "No se obtuvieron probabilidades del modelo ONNX");
                 }
 
                 OnnxMap onnxMap = (OnnxMap) sequence.getValue().get(0);
@@ -65,22 +68,19 @@ public class Predictor {
             }
         } catch (OrtException e) {
             throw new PredictionTechnicalException(
-                PredictionTechnicalException.ONNX_RUNTIME_ERROR,
-                "Error durante la ejecución del modelo ONNX",
-                e
-            );
+                    PredictionTechnicalException.ONNX_RUNTIME_ERROR,
+                    "Error durante la ejecución del modelo ONNX",
+                    e);
         } catch (ClassCastException e) {
             throw new PredictionTechnicalException(
-                PredictionTechnicalException.UNEXPECTED_ERROR,
-                "Formato inesperado en la salida del modelo ONNX (posible incompatibilidad con el modelo exportado)",
-                e
-            );
+                    PredictionTechnicalException.UNEXPECTED_ERROR,
+                    "Formato inesperado en la salida del modelo ONNX (posible incompatibilidad con el modelo exportado)",
+                    e);
         } catch (Exception e) {
             throw new PredictionTechnicalException(
-                PredictionTechnicalException.UNEXPECTED_ERROR,
-                "Error inesperado al procesar la predicción",
-                e
-            );
+                    PredictionTechnicalException.UNEXPECTED_ERROR,
+                    "Error inesperado al procesar la predicción",
+                    e);
         }
     }
 }

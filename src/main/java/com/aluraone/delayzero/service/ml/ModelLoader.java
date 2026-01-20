@@ -26,10 +26,10 @@ public class ModelLoader {
             session = env.createSession(is.readAllBytes());
         } catch (Exception e) {
             throw new PredictionTechnicalException(
-                PredictionTechnicalException.MODEL_LOAD_FAILED,
-                "No se pudo cargar el modelo ONNX flight_delay_rf.onnx",
-                e
-            );
+                    PredictionTechnicalException.MODEL_LOAD_FAILED,
+                    "No se pudo cargar el modelo ONNX flight_delay_rf.onnx",
+                    e);
         }
     }
+
 }

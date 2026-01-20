@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>FlightOnTime</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/dashboard.css">
     <link rel="stylesheet" href="./styles/footer.css">
+    <link rel="stylesheet" href="./styles/dashboardAdaptive.css">
 </head>
 <body>
     <header class="header-banner">
@@ -17,23 +19,27 @@
             <form class="form-container" >
                 <div class="form-grid">
                     <div class="div-container">
-                        <label class="div-container__label" for="nameAirline">Nombre Aerolinea</label>
-                        <input id="nameAirline" class="div-container__input" type="text" placeholder="Ingrese..." required>
+                        <label  class="div-container__label" for="nameAirline">Nombre Aerolínea</label>
+                        <select id="nameAirline" class="div-container__select-airline" required>
+                            <option value="" selected>No seleccionado</option>
+                        </select>
                     </div>
-                    
+                
                     <div class="div-container">
                         <label class="div-container__label" for="flightOrigin">Origen Vuelo</label>
-                        <input id="flightOrigin" class="div-container__input"  type="text" placeholder="Ingrese..." required>
+                        <input id="flightOrigin" class="div-container__input" list="listAirportOrigin" type="text" placeholder="Ingrese..." required>
+                        <datalist id="listAirportOrigin"></datalist>
                     </div>
-                    
+
                     <div class="div-container">
                         <label class="div-container__label" for="flightDestination">Destino Vuelo</label>
-                        <input id="flightDestination" class="div-container__input"  type="text" placeholder="Ingrese..." required>
+                        <input id="flightDestination" class="div-container__input" list="listAirportDestination" type="text" placeholder="Ingrese..." required>
+                        <datalist id="listAirportDestination"></datalist>
                     </div>
                     
                     <div class="div-container">
                         <label class="div-container__label" for="flightDate">Fecha salida Vuelo</label>
-                        <input id="flightDate" class="div-container__input"  type="text" placeholder="Ingrese..." required>
+                        <input id="flightDate" class="div-container__input"  type="datetime-local" placeholder="Ingrese..." required>
                     </div>
                     
                     <div class="div-container">
@@ -68,8 +74,10 @@
         <section class="statistics">
             <h2 class="statistics__title"><strong class="bold-text">Estadísticas</strong> - Monitoreo en tiempo real de predicciones.</h2>
             <button id="update-button" class="statistics__update-button" type="button">🔄 Actualizar</button>
+
             <div id="loading" class="statistics__loading">Cargando datos...</div>
             <div id="error" class="statistics__error"></div>
+
             <div id="cards-container">
                 <div id="statistics__cards" class="statistics__cards">
                     <div class="statistic-card">
