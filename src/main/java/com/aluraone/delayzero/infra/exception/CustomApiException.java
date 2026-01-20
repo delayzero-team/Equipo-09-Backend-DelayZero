@@ -1,17 +1,23 @@
 package com.aluraone.delayzero.infra.exception;
 
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
 public abstract class CustomApiException extends RuntimeException {
 
-    final HttpStatus returnStatus;
+    private final HttpStatus status;
+    private final String code;
 
-    public CustomApiException(String message, HttpStatus returnStatus) {
+    protected CustomApiException(String message, HttpStatus status, String code) {
         super(message);
-        this.returnStatus = returnStatus;
+        this.status = status;
+        this.code = code;
     }
 
+    public HttpStatus getStatus() {
+        return status;
+    }
 
+    public String getCode() {
+        return code;
+    }
 }
