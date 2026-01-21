@@ -23,7 +23,7 @@ public class FlightPredictController {
     @PostMapping
 
     public ResponseEntity<PredictionData> makePrediction(@RequestBody @Valid PredictionRequest request) {
-        return ResponseEntity.ok(ps.callModel(request));
+        return ResponseEntity.ok(ps.startPrediction(request));
 
     }
 }

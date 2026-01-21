@@ -35,7 +35,7 @@ public class PredictService {
             returnData = new PredictionData(foundPrediction.isVueloRetrasado() ? "Retrasado" : "Puntual", foundPrediction.getProbabilidadRetraso());
         } else {
             returnData = callModel(request);
-            newPred.setResult(returnData.prevision().equals("Atrasado"), returnData.probabilidad());
+            newPred.setResult(returnData.prevision().equals("Retrasado"), returnData.probabilidad());
             pRepo.save(newPred);
         }
 
