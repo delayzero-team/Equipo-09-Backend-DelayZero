@@ -35,10 +35,10 @@ public class FlightPredictStatisticsController {
         List<StatisticsByOrigin> originData = List.of(origin1, origin2, origin3, origin4);
 
         // Estadísticas por hora del día (probabilidad promedio de retraso)
-        var hour1 = new HourlyStatistics(10, 0.4);
-        var hour2 = new HourlyStatistics(14, 0.23);
-        var hour3 = new HourlyStatistics(4, 0.78);
-        var hour4 = new HourlyStatistics(8, 0.89);
+        var hour1 = new HourlyStatistics(java.sql.Time.valueOf("10:00:00"), 0.4);
+        var hour2 = new HourlyStatistics(java.sql.Time.valueOf("14:00:00"), 0.23);
+        var hour3 = new HourlyStatistics(java.sql.Time.valueOf("04:00:00"), 0.78);
+        var hour4 = new HourlyStatistics(java.sql.Time.valueOf("08:00:00"), 0.89);
         List<HourlyStatistics> hourData = List.of(hour1, hour2, hour3, hour4);
 
         // Construcción del objeto completo

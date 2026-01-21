@@ -20,9 +20,8 @@ public class PredictService {
     @Autowired
     private Predictor predictor;
 
-<<<<<<< HEAD
     @Autowired
-            PredictionRepository pRepo;
+    PredictionRepository pRepo;
 
     public PredictionData startPrediction(PredictionRequest request){
 
