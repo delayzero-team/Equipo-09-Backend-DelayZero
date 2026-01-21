@@ -53,18 +53,20 @@ public class Predictor {
                 int prediction = (int) labelArr[0];
                 String prevision = (prediction == 1) ? "Retrasado" : "Puntual";
 
-                OnnxSequence sequence = (OnnxSequence) result.get(1);
-                if (sequence == null || sequence.getValue().isEmpty()) {
+                OnnxSequence onnxSequence = (OnnxSequence) result.get(1);
+
+                if (onnxSequence == null || onnxSequence.getValue().isEmpty()) {
                     throw new PredictionTechnicalException(
                             PredictionTechnicalException.ONNX_RUNTIME_ERROR,
                             "No se obtuvieron probabilidades del modelo ONNX");
                 }
 
-                OnnxMap onnxMap = (OnnxMap) sequence.getValue().get(0);
-                Map<Long, Float> probMap = (Map<Long, Float>) onnxMap.getValue();
-                float delayProbability = probMap.getOrDefault(1L, 0.0f);
+                OnnxMap onnxMap = (OnnxMap) onnxSequence.getValue().get(0);
 
-                return new PredictionData(prevision, delayProbability);
+                float probabilityPrediction = ((Map<Long, Float>) onnxMap.getValue())
+                        .getOrDefault( (prevision.equals("Puntual") ? 0L : 1L) , 0.0f);
+
+                return new PredictionData(prevision, probabilityPrediction);
             }
         } catch (OrtException e) {
             throw new PredictionTechnicalException(

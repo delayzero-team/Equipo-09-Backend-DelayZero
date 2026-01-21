@@ -21,7 +21,7 @@ public class PredictService {
     private Predictor predictor;
 
     @Autowired
-    PredictionRepository pRepo;
+    private PredictionRepository pRepo;
 
     public PredictionData startPrediction(PredictionRequest request){
 
