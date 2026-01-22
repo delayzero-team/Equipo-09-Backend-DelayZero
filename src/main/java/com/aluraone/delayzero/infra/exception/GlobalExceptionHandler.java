@@ -2,10 +2,13 @@ package com.aluraone.delayzero.infra.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -39,8 +42,6 @@ public class GlobalExceptionHandler {
         body.put("error", "Internal Server Error");
         body.put("message", "Ocurrió un error interno. Contacta al equipo técnico.");
         body.put("code", ex.getCode());
-        // En producción: no exponer detalles técnicos
-        // body.put("detail", ex.getMessage());
 
         return new ResponseEntity<>(body, ex.getStatus());
     }
@@ -63,7 +64,45 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
-    // Captura cualquier otra excepción no manejada
+    @ExceptionHandler(PredictionNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFound(
+            PredictionNotFoundException ex, WebRequest request) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", 404);
+        body.put("error", "Not Found");
+        body.put("message", ex.getMessage());
+        body.put("code", ex.getCode());
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidFormat(HttpMessageNotReadableException ex, WebRequest request) {
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", 400);
+        body.put("error", "Bad Request");
+        body.put("code", PredictionBusinessException.INVALID_DATE);
+
+        String message = "Formato de fecha inválido. Use yyyy-MM-dd'T'HH:mm:ss";
+
+        Throwable cause = ex.getCause();
+        if (cause instanceof InvalidFormatException ife) {
+            if (ife.getTargetType().equals(LocalDateTime.class)) {
+                body.put("message", message);
+            } else {
+                body.put("message", "Formato inválido en el request");
+            }
+        } else {
+            body.put("message", "Request mal formado");
+        }
+
+        body.put("path", request.getDescription(false));
+
+        return ResponseEntity.badRequest().body(body);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleAllExceptions(
             Exception ex, WebRequest request) {
@@ -75,17 +114,5 @@ public class GlobalExceptionHandler {
         body.put("message", "Error inesperado");
 
         return ResponseEntity.internalServerError().body(body);
-    }
-
-    @ExceptionHandler(PredictionNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFound(
-            PredictionNotFoundException ex, WebRequest request) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", 404);
-        body.put("error", "Not Found");
-        body.put("message", ex.getMessage());
-        body.put("code", ex.getCode());
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 }
