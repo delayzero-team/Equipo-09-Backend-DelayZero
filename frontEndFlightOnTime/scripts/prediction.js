@@ -11,8 +11,10 @@ async function showPrediction() {
 
     const textPrediction = dataPrediction.prevision;
     const probabilityPrediction = dataPrediction.probabilidad.toFixed(2);
+    const dateHour = dataFlight.fechaPartidaVuelo.split("T");
+    console.log(dateHour)
 
-    const detailsFlight = `El Vuelo con fecha ${dataFlight.fechaPartidaVuelo} de la Aerolínea ${dataFlight.nombreAerolinea} 
+    const detailsFlight = `El Vuelo con Fecha: ${dateHour[0]}, en la Hora: ${dateHour[1]}, de la Aerolínea: ${dataFlight.nombreAerolinea}, 
         ${textPrediction == "Puntual" ? "es" : "esta"} ${textPrediction}.
         Con una probabilidad de ${probabilityPrediction * 100}%.`;
     
@@ -37,8 +39,6 @@ function getInputs() {
         fechaPartidaVuelo : inputDate,
         distanciaKilometros : inputDistance
     }
-
-    console.log(dataUser);
 
     return dataUser;
 }

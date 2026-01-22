@@ -1,4 +1,4 @@
-const URL_BASE = 'http://localhost:8080';
+const URL_BASE = 'http://104.248.222.55:8080';
 
 export async function getStatistics() {
 
@@ -26,6 +26,7 @@ export async function getStatistics() {
         return await response.json();
         
     } catch (error) {
+        
 
         console.error('Error cargando datos:', error);
         divError.textContent = `⚠️ Error conectando con la API: ${error.message}. Asegúrate de que el servidor esté corriendo en ${URL_BASE}`;
@@ -53,8 +54,16 @@ export async function sendData(dataFlight) {
             body : JSON.stringify(dataFlight)
         });
 
+
         if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
+            if (response.status == 400) {
+
+                console.log('Error al realizar POST: ' + error);
+                information.innerHTML = "⚠️ Verifica los campos del formulario. Los Aeropuertos deben ser seleccionados de la Lista.";
+                return null;
+            } else {
+                throw new Error(`Error: ${response.status}`);
+            } 
         }
 
         divResultContainer.style.display = 'block';
@@ -62,6 +71,7 @@ export async function sendData(dataFlight) {
         return await response.json();
 
     } catch (error) {
+        
 
         console.log('Error al realizar POST: ' + error);
         information.innerHTML = "⚠️ Tuvimos un error por nuestra parte, vuelve a intentarlo.";

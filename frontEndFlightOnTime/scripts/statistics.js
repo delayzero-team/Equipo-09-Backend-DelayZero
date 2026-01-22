@@ -27,7 +27,7 @@ async function showStatistics() {
         const aerolineas = dataStatistics.estadisticasPorAerolinea.sort((a, b) => b.porcentajeRetraso - a.porcentajeRetraso);
                 
         aerolineas.forEach(aero => {
-            airlinesDiv.innerHTML += crearBarra(aero.aerolinea, aero.porcentajeRetraso,`${aero.porcentajeRetraso}%`);
+            airlinesDiv.innerHTML += crearBarra(aero.aerolinea, aero.porcentajeRetraso,`${aero.porcentajeRetraso.toFixed(1)}%`);
         });
     }
 
@@ -40,7 +40,7 @@ async function showStatistics() {
             .slice(0, 10);
                 
         aeropuertos.forEach(aero => {
-            airportsDiv.innerHTML += crearBarra(aero.aeropuerto,aero.porcentajeRetraso,`${aero.porcentajeRetraso}%`);
+            airportsDiv.innerHTML += crearBarra(aero.aeropuerto,aero.porcentajeRetraso,`${aero.porcentajeRetraso.toFixed(1)}%`);
 
         });
     }
@@ -63,11 +63,12 @@ async function showStatistics() {
 function noData() {
     let sectionStatisticsCards = document.getElementById("cards-container");
     let sectionStatisticsGraphicsCards = document.getElementById("cardsGraphics-container");
-    let divLoading = document.getElementById('loading');
+    let divLoading = document.getElementById('error');
 
     sectionStatisticsCards.style.display = 'none';
     sectionStatisticsGraphicsCards.style.display = 'none';
-    divLoading.innerHTML = '<p class="no-data">No hay datos disponibles. Realiza algunas predicciones primero usando Consultar.</p>';
+    divLoading.style.display = "block";
+    divLoading.innerText = 'No hay datos disponibles. Realiza algunas predicciones primero usando Consultar.';
 }
 
 function crearBarra(label, porcentaje, texto) {
